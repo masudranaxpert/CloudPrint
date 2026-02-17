@@ -89,25 +89,25 @@ export default function Home() {
             </section>
 
             {/* ===== Features ===== */}
-            <section className="py-20">
+            <section className="py-20 bg-slate-950">
                 <div className="mx-auto w-full max-w-[1200px] px-6">
                     <div className="mx-auto mb-12 max-w-[600px] text-center">
-                        <h2 className="mb-4 text-[clamp(1.5rem,4vw,2.4rem)] font-bold text-slate-900">
-                            কেন <span className="bg-gradient-to-r from-teal-600 to-teal-400 bg-clip-text text-transparent">CloudPrint</span> বেছে নেবেন?
+                        <h2 className="mb-4 text-[clamp(1.5rem,4vw,2.4rem)] font-bold text-slate-50">
+                            কেন <span className="bg-gradient-to-r from-teal-300 to-teal-400 bg-clip-text text-transparent">CloudPrint</span> বেছে নেবেন?
                         </h2>
-                        <p className="text-lg text-slate-500">সবচেয়ে সহজ, দ্রুত এবং সাশ্রয়ী প্রিন্টিং সেবা — আপনার জন্য</p>
+                        <p className="text-lg text-slate-400">সবচেয়ে সহজ, দ্রুত এবং সাশ্রয়ী প্রিন্টিং সেবা — আপনার জন্য</p>
                     </div>
 
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {features.map((f, i) => {
                             const Icon = f.icon;
                             return (
-                                <div key={i} className="cursor-pointer rounded-xl border border-slate-200 bg-white p-8 transition-all hover:-translate-y-1 hover:border-teal-200 hover:shadow-xl">
-                                    <div className={`mb-5 flex h-14 w-14 items-center justify-center rounded-lg ${f.bg}`}>
+                                <div key={i} className="cursor-pointer rounded-xl border border-slate-800 bg-slate-900/90 p-8 transition-all hover:-translate-y-1 hover:border-teal-500/60 hover:shadow-xl hover:shadow-teal-900/40">
+                                    <div className={`mb-5 flex h-14 w-14 items-center justify-center rounded-lg ${f.bg.replace('50', '900')}`}>
                                         <Icon size={28} className={f.color} />
                                     </div>
-                                    <h3 className="mb-3 text-xl font-bold text-slate-900">{f.title}</h3>
-                                    <p className="text-sm leading-relaxed text-slate-500">{f.desc}</p>
+                                    <h3 className="mb-3 text-xl font-bold text-slate-50">{f.title}</h3>
+                                    <p className="text-sm leading-relaxed text-slate-400">{f.desc}</p>
                                 </div>
                             );
                         })}
@@ -116,11 +116,11 @@ export default function Home() {
             </section>
 
             {/* ===== How It Works ===== */}
-            <section className="bg-slate-50 py-20">
+            <section className="bg-slate-900 py-20">
                 <div className="mx-auto w-full max-w-[1200px] px-6">
                     <div className="mx-auto mb-12 max-w-[600px] text-center">
-                        <h2 className="mb-4 text-[clamp(1.5rem,4vw,2.4rem)] font-bold text-slate-900">কিভাবে কাজ করে?</h2>
-                        <p className="text-lg text-slate-500">মাত্র ৪টি ধাপে আপনার প্রিন্ট অর্ডার সম্পন্ন করুন</p>
+                        <h2 className="mb-4 text-[clamp(1.5rem,4vw,2.4rem)] font-bold text-slate-50">কিভাবে কাজ করে?</h2>
+                        <p className="text-lg text-slate-400">মাত্র ৪টি ধাপে আপনার প্রিন্ট অর্ডার সম্পন্ন করুন</p>
                     </div>
 
                     <div className="relative grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -129,8 +129,8 @@ export default function Home() {
                                 <div className="relative z-10 mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-teal-600 to-teal-500 text-xl font-extrabold text-white shadow-lg shadow-teal-600/30" style={{ fontFamily: 'Inter, sans-serif' }}>
                                     {s.num}
                                 </div>
-                                <h3 className="mb-2 text-lg font-bold text-slate-900">{s.title}</h3>
-                                <p className="text-sm text-slate-500">{s.desc}</p>
+                                <h3 className="mb-2 text-lg font-bold text-slate-50">{s.title}</h3>
+                                <p className="text-sm text-slate-400">{s.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -138,35 +138,35 @@ export default function Home() {
             </section>
 
             {/* ===== Pricing Preview ===== */}
-            <section className="py-20">
+            <section className="py-20 bg-slate-950">
                 <div className="mx-auto w-full max-w-[1200px] px-6">
                     <div className="mx-auto mb-12 max-w-[600px] text-center">
-                        <h2 className="mb-4 text-[clamp(1.5rem,4vw,2.4rem)] font-bold text-slate-900">সাশ্রয়ী মূল্য</h2>
-                        <p className="text-lg text-slate-500">প্রতি পাতা থেকে শুরু — কোনো লুকানো চার্জ নেই</p>
+                        <h2 className="mb-4 text-[clamp(1.5rem,4vw,2.4rem)] font-bold text-slate-50">সাশ্রয়ী মূল্য</h2>
+                        <p className="text-lg text-slate-400">প্রতি পাতা থেকে শুরু — কোনো লুকানো চার্জ নেই</p>
                     </div>
 
                     <div className="mx-auto grid max-w-[700px] grid-cols-1 gap-8 sm:grid-cols-2">
                         {/* B&W */}
-                        <div className="relative overflow-hidden rounded-2xl border-2 border-teal-500 p-8 text-center shadow-lg shadow-teal-500/10 transition-all hover:-translate-y-1 hover:shadow-xl">
+                        <div className="relative overflow-hidden rounded-2xl border-2 border-teal-500/80 bg-slate-900/80 p-8 text-center shadow-lg shadow-teal-900/40 transition-all hover:-translate-y-1 hover:shadow-xl">
                             <div className="absolute right-[-32px] top-[16px] rotate-45 bg-teal-600 px-10 py-1 text-xs font-semibold text-white">জনপ্রিয়</div>
-                            <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-slate-500">সাদা-কালো (B&W)</p>
-                            <p className="mb-2 text-4xl font-extrabold text-slate-900" style={{ fontFamily: 'Inter, sans-serif' }}>
-                                ৳{bwPrice} <span className="text-lg font-normal text-slate-500">/ পাতা</span>
+                            <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-slate-400">সাদা-কালো (B&W)</p>
+                            <p className="mb-2 text-4xl font-extrabold text-slate-50" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                ৳{bwPrice} <span className="text-lg font-normal text-slate-400">/ পাতা</span>
                             </p>
-                            <p className="mb-6 text-sm text-slate-400">১ পাতা = ২ পৃষ্ঠা (সামনে + পেছনে)</p>
+                            <p className="mb-6 text-sm text-slate-500">১ পাতা = ২ পৃষ্ঠা (সামনে + পেছনে)</p>
                             <Link href="/calculator" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-600 to-teal-500 py-3 font-bold text-white shadow-md shadow-teal-600/20 transition-all hover:from-teal-700 hover:to-teal-600">
                                 <Calculator size={18} /> ক্যালকুলেট করুন
                             </Link>
                         </div>
 
                         {/* Color */}
-                        <div className="rounded-2xl border-2 border-slate-200 p-8 text-center transition-all hover:-translate-y-1 hover:shadow-xl">
-                            <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-slate-500">কালার প্রিন্ট</p>
-                            <p className="mb-2 text-4xl font-extrabold text-slate-900" style={{ fontFamily: 'Inter, sans-serif' }}>
-                                ৳{colorPrice} <span className="text-lg font-normal text-slate-500">/ পাতা</span>
+                        <div className="rounded-2xl border-2 border-slate-700 bg-slate-900/80 p-8 text-center transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/40">
+                            <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-slate-400">কালার প্রিন্ট</p>
+                            <p className="mb-2 text-4xl font-extrabold text-slate-50" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                ৳{colorPrice} <span className="text-lg font-normal text-slate-400">/ পাতা</span>
                             </p>
-                            <p className="mb-6 text-sm text-slate-400">১ পাতা = ২ পৃষ্ঠা (সামনে + পেছনে)</p>
-                            <Link href="/calculator" className="inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 border-teal-600 py-3 font-bold text-teal-600 transition-all hover:bg-teal-600 hover:text-white">
+                            <p className="mb-6 text-sm text-slate-500">১ পাতা = ২ পৃষ্ঠা (সামনে + পেছনে)</p>
+                            <Link href="/calculator" className="inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 border-teal-500 py-3 font-bold text-teal-300 transition-all hover:bg-teal-600 hover:text-white">
                                 <Calculator size={18} /> ক্যালকুলেট করুন
                             </Link>
                         </div>
@@ -175,11 +175,11 @@ export default function Home() {
             </section>
 
             {/* ===== CTA ===== */}
-            <section className="bg-slate-50 py-20">
+            <section className="bg-slate-900 py-20">
                 <div className="mx-auto w-full max-w-[1200px] px-6 text-center">
                     <div className="mx-auto mb-12 max-w-[600px]">
-                        <h2 className="mb-4 text-[clamp(1.5rem,4vw,2.4rem)] font-bold text-slate-900">এখনই শুরু করুন!</h2>
-                        <p className="text-lg text-slate-500">আপনার PDF আপলোড করুন এবং তাৎক্ষণিক দাম জানুন</p>
+                        <h2 className="mb-4 text-[clamp(1.5rem,4vw,2.4rem)] font-bold text-slate-50">এখনই শুরু করুন!</h2>
+                        <p className="text-lg text-slate-400">আপনার PDF আপলোড করুন এবং তাৎক্ষণিক দাম জানুন</p>
                     </div>
                     <div className="flex flex-wrap justify-center gap-4">
                         <Link href="/calculator" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 px-8 py-4 text-lg font-bold text-slate-900 shadow-lg shadow-amber-500/30 transition-all hover:from-amber-600 hover:to-amber-500 active:scale-[0.97]">

@@ -92,20 +92,20 @@ export default function CalculatorPage() {
     }, []);
 
     return (
-        <div className="min-h-screen bg-slate-50 pt-[72px]">
+        <div className="min-h-screen bg-slate-950 pt-[72px]">
             <div className="mx-auto max-w-[1200px] px-6 py-12">
                 {/* Header */}
                 <div className="mb-8">
-                    <h1 className="flex items-center gap-3 text-[clamp(1.5rem,4vw,2.4rem)] font-bold text-slate-900">
-                        <Calculator size={32} className="text-teal-600" /> প্রাইস ক্যালকুলেটর
+                    <h1 className="flex items-center gap-3 text-[clamp(1.5rem,4vw,2.4rem)] font-bold text-slate-50">
+                        <Calculator size={32} className="text-teal-400" /> প্রাইস ক্যালকুলেটর
                     </h1>
-                    <p className="mt-2 text-slate-500">আপনার PDF আপলোড করুন অথবা ম্যানুয়ালি পৃষ্ঠা সংখ্যা দিন — তাৎক্ষণিক দাম জানুন।</p>
+                    <p className="mt-2 text-slate-400">আপনার PDF আপলোড করুন অথবা ম্যানুয়ালি পৃষ্ঠা সংখ্যা দিন — তাৎক্ষণিক দাম জানুন।</p>
                 </div>
 
                 {/* Info Banner */}
-                <div className="mb-6 flex gap-3 rounded-xl border border-teal-200 bg-teal-50 p-4">
-                    <Info size={20} className="mt-0.5 shrink-0 text-teal-700" />
-                    <div className="text-sm text-teal-900">
+                <div className="mb-6 flex gap-3 rounded-xl border border-teal-700 bg-teal-900/30 p-4">
+                    <Info size={20} className="mt-0.5 shrink-0 text-teal-300" />
+                    <div className="text-sm text-teal-100">
                         <strong>পৃষ্ঠা ও পাতা বুঝুন:</strong>
                         <ul className="mt-2 list-disc space-y-1 pl-4 leading-relaxed">
                             <li><strong>১ পাতা (Sheet)</strong> = ১ কাগজ = ২ পৃষ্ঠা (Page) — সামনে + পেছনে</li>
@@ -120,39 +120,44 @@ export default function CalculatorPage() {
                     <div>
                         {/* Upload Zone */}
                         <div
-                            className={`flex cursor-pointer flex-col items-center gap-3 rounded-xl border-2 border-dashed p-10 text-center transition-all ${dragOver ? 'border-teal-500 bg-teal-50' : 'border-slate-300 bg-white hover:border-teal-500 hover:bg-teal-50/30'}`}
+                            className={`flex cursor-pointer flex-col items-center gap-3 rounded-xl border-2 border-dashed p-10 text-center transition-all ${dragOver ? 'border-teal-400 bg-slate-900' : 'border-slate-700 bg-slate-900 hover:border-teal-500 hover:bg-slate-900/80'}`}
                             onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave}
                             onClick={() => document.getElementById('pdf-input').click()}
                         >
-                            <Upload size={36} className="text-slate-400" strokeWidth={1.5} />
-                            <p className="font-semibold text-slate-700">PDF ফাইল ড্র্যাগ করুন এখানে</p>
+                            <Upload size={36} className="text-slate-300" strokeWidth={1.5} />
+                            <p className="font-semibold text-slate-100">PDF ফাইল ড্র্যাগ করুন এখানে</p>
                             <p className="text-sm text-slate-400">অথবা ক্লিক করে সিলেক্ট করুন • একসাথে অনেকগুলো PDF দিতে পারবেন</p>
                             <input id="pdf-input" type="file" accept=".pdf" multiple className="hidden" onChange={(e) => handleFiles(e.target.files)} />
                         </div>
 
-                        <button onClick={addManualEntry} className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-slate-200 bg-white py-3 font-semibold text-slate-600 transition-all hover:border-teal-200 hover:bg-teal-50/50">
+                        <button onClick={addManualEntry} className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-slate-700 bg-slate-900 py-3 font-semibold text-slate-100 transition-all hover:border-teal-400 hover:bg-slate-900/80">
                             <Plus size={18} /> PDF ছাড়া ম্যানুয়ালি পৃষ্ঠা সংখ্যা দিন
                         </button>
 
                         {loading && (
-                            <div className="mt-6 flex items-center justify-center gap-3 text-slate-500">
-                                <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-teal-600 border-t-transparent" /> PDF পড়া হচ্ছে...
+                            <div className="mt-6 flex items-center justify-center gap-3 text-slate-400">
+                                <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-teal-400 border-t-transparent" /> PDF পড়া হচ্ছে...
                             </div>
                         )}
 
                         {/* PDF List */}
                         <div className="mt-6 space-y-4">
                             {pdfItems.map((pdf) => (
-                                <div key={pdf.id} className="rounded-xl border border-slate-200 bg-white p-5 transition-all hover:shadow-md">
+                                <div key={pdf.id} className="rounded-xl border border-slate-800 bg-slate-900/90 p-5 transition-all hover:shadow-md hover:shadow-slate-900/60">
                                     <div className="flex items-start justify-between gap-4">
                                         <div className="min-w-0 flex-1">
-                                            <h4 className="flex items-center gap-2 font-semibold text-slate-900">
+                                            <h4 className="flex items-center gap-2 font-semibold text-slate-100">
                                                 <FileText size={18} className="shrink-0 text-slate-400" />
                                                 {pdf.isManual ? (
-                                                    <input type="text" value={pdf.fileName} onChange={(e) => updatePdf(pdf.id, 'fileName', e.target.value)} className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20" />
+                                                    <input
+                                                        type="text"
+                                                        value={pdf.fileName}
+                                                        onChange={(e) => updatePdf(pdf.id, 'fileName', e.target.value)}
+                                                        className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-sm text-slate-100 focus:border-teal-400 focus:ring-2 focus:ring-teal-500/20"
+                                                    />
                                                 ) : <span className="truncate">{pdf.fileName}</span>}
                                             </h4>
-                                            <div className="mt-2 flex items-center gap-3 text-xs text-slate-500">
+                                            <div className="mt-2 flex items-center gap-3 text-xs text-slate-400">
                                                 <span className="flex items-center gap-1"><Layers size={14} /> {pdf.pageCount} পৃষ্ঠা</span>
                                                 <span className="flex items-center gap-1"><Copy size={14} /> {pdf.sheets} পাতা</span>
                                             </div>
@@ -161,20 +166,20 @@ export default function CalculatorPage() {
                                             <div className="mt-3 flex flex-wrap gap-3">
                                                 {pdf.isManual && (
                                                     <div>
-                                                        <label className="mb-1 block text-xs font-medium text-slate-500">পৃষ্ঠা সংখ্যা</label>
-                                                        <input type="number" min="1" value={pdf.pageCount} onChange={(e) => updatePdf(pdf.id, 'pageCount', Math.max(1, Number(e.target.value)))} className="w-20 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20" />
+                                                        <label className="mb-1 block text-xs font-medium text-slate-400">পৃষ্ঠা সংখ্যা</label>
+                                                        <input type="number" min="1" value={pdf.pageCount} onChange={(e) => updatePdf(pdf.id, 'pageCount', Math.max(1, Number(e.target.value)))} className="w-20 rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 focus:border-teal-400 focus:ring-2 focus:ring-teal-500/20" />
                                                     </div>
                                                 )}
                                                 <div>
-                                                    <label className="mb-1 block text-xs font-medium text-slate-500">প্রিন্ট টাইপ</label>
-                                                    <select value={pdf.printType} onChange={(e) => updatePdf(pdf.id, 'printType', e.target.value)} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20">
+                                                    <label className="mb-1 block text-xs font-medium text-slate-400">প্রিন্ট টাইপ</label>
+                                                    <select value={pdf.printType} onChange={(e) => updatePdf(pdf.id, 'printType', e.target.value)} className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 focus:border-teal-400 focus:ring-2 focus:ring-teal-500/20">
                                                         <option value="bw">সাদা-কালো (B&W)</option>
                                                         <option value="color">কালার</option>
                                                     </select>
                                                 </div>
                                                 <div>
-                                                    <label className="mb-1 block text-xs font-medium text-slate-500">Slides/Page</label>
-                                                    <select value={pdf.slidesPerPage} onChange={(e) => updatePdf(pdf.id, 'slidesPerPage', Number(e.target.value))} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20">
+                                                    <label className="mb-1 block text-xs font-medium text-slate-400">Slides/Page</label>
+                                                    <select value={pdf.slidesPerPage} onChange={(e) => updatePdf(pdf.id, 'slidesPerPage', Number(e.target.value))} className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 focus:border-teal-400 focus:ring-2 focus:ring-teal-500/20">
                                                         <option value={1}>১ slide / page</option>
                                                         <option value={2}>২ slides / page</option>
                                                         <option value={4}>৪ slides / page</option>
@@ -187,17 +192,17 @@ export default function CalculatorPage() {
 
                                         {/* Price + Remove */}
                                         <div className="shrink-0 text-right">
-                                            <p className="text-xl font-bold text-teal-700" style={{ fontFamily: 'Inter, sans-serif' }}>{formatPrice(pdf.totalPrice)}</p>
+                                            <p className="text-xl font-bold text-teal-300" style={{ fontFamily: 'Inter, sans-serif' }}>{formatPrice(pdf.totalPrice)}</p>
                                             <p className="text-xs text-slate-400" style={{ fontFamily: 'Inter, sans-serif' }}>{pdf.sheets} পাতা × {formatPrice(pdf.pricePerSheet)}</p>
-                                            <button onClick={() => removePdf(pdf.id)} className="mt-2 text-slate-400 transition-colors hover:text-red-500" title="মুছে ফেলুন"><Trash2 size={18} /></button>
+                                            <button onClick={() => removePdf(pdf.id)} className="mt-2 text-slate-500 transition-colors hover:text-red-400" title="মুছে ফেলুন"><Trash2 size={18} /></button>
                                         </div>
                                     </div>
                                 </div>
                             ))}
 
                             {pdfs.length === 0 && (
-                                <div className="py-12 text-center text-slate-400">
-                                    <FileText size={48} strokeWidth={1} className="mx-auto mb-4 opacity-30" />
+                                <div className="py-12 text-center text-slate-500">
+                                    <FileText size={48} strokeWidth={1} className="mx-auto mb-4 opacity-40" />
                                     <p>এখনো কোনো PDF অ্যাড করা হয়নি</p>
                                     <p className="mt-1 text-sm">উপরের বক্সে PDF ড্র্যাগ করুন বা "ম্যানুয়ালি পৃষ্ঠা সংখ্যা দিন" বাটন ক্লিক করুন</p>
                                 </div>
@@ -207,40 +212,40 @@ export default function CalculatorPage() {
 
                     {/* Right side - Summary */}
                     <div className="lg:sticky lg:top-[88px] lg:self-start">
-                        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-lg">
-                            <h3 className="mb-4 text-lg font-bold text-slate-900">অর্ডার সারসংক্ষেপ</h3>
+                        <div className="rounded-xl border border-slate-800 bg-slate-900/90 p-6 shadow-lg shadow-slate-900/60">
+                            <h3 className="mb-4 text-lg font-bold text-slate-50">অর্ডার সারসংক্ষেপ</h3>
 
                             {pdfItems.length > 0 ? (
                                 <>
                                     <div className="space-y-3">
                                         {pdfItems.map((pdf, i) => (
                                             <div key={pdf.id} className="flex items-center justify-between text-sm">
-                                                <span className="max-w-[200px] truncate text-slate-600">{i + 1}. {pdf.fileName}</span>
-                                                <span className="font-semibold text-slate-900" style={{ fontFamily: 'Inter, sans-serif' }}>{formatPrice(pdf.totalPrice)}</span>
+                                                <span className="max-w-[200px] truncate text-slate-300">{i + 1}. {pdf.fileName}</span>
+                                                <span className="font-semibold text-teal-300" style={{ fontFamily: 'Inter, sans-serif' }}>{formatPrice(pdf.totalPrice)}</span>
                                             </div>
                                         ))}
                                     </div>
 
-                                    <div className="my-4 flex items-center justify-between border-t border-slate-100 pt-4 text-sm text-slate-500">
+                                    <div className="my-4 flex items-center justify-between border-t border-slate-700 pt-4 text-sm text-slate-400">
                                         <span>মোট পাতা (Sheet)</span>
                                         <span style={{ fontFamily: 'Inter, sans-serif' }}>{totalSheets}</span>
                                     </div>
 
-                                    <div className="flex items-center justify-between border-t border-slate-200 py-4 text-lg font-bold">
-                                        <span className="text-slate-900">সর্বমোট</span>
-                                        <span className="text-teal-700" style={{ fontFamily: 'Inter, sans-serif' }}>{formatPrice(Math.round(grandTotal * 100) / 100)}</span>
+                                    <div className="flex items-center justify-between border-t border-slate-700 py-4 text-lg font-bold">
+                                        <span className="text-slate-50">সর্বমোট</span>
+                                        <span className="text-teal-300" style={{ fontFamily: 'Inter, sans-serif' }}>{formatPrice(Math.round(grandTotal * 100) / 100)}</span>
                                     </div>
 
                                     {/* Share URL Section */}
                                     <div className="mt-2">
                                         {!shareUrl ? (
-                                            <button onClick={handleShare} disabled={sharing} className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-200 py-2 text-sm font-semibold text-slate-600 transition-all hover:border-teal-200 hover:bg-teal-50 disabled:opacity-60">
-                                                {sharing ? <><span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-teal-600 border-t-transparent" /> লিংক তৈরি হচ্ছে...</> : <><Share2 size={16} /> শেয়ার লিংক তৈরি করুন</>}
+                                            <button onClick={handleShare} disabled={sharing} className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-700 py-2 text-sm font-semibold text-slate-100 transition-all hover:border-teal-400 hover:bg-slate-900 disabled:opacity-60">
+                                                {sharing ? <><span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-teal-400 border-t-transparent" /> লিংক তৈরি হচ্ছে...</> : <><Share2 size={16} /> শেয়ার লিংক তৈরি করুন</>}
                                             </button>
                                         ) : (
-                                            <div className="flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2.5">
-                                                <Link2 size={14} className="shrink-0 text-teal-600" />
-                                                <input type="text" readOnly value={shareUrl} className="min-w-0 flex-1 border-none bg-transparent text-xs text-slate-700 outline-none" style={{ fontFamily: 'Inter, sans-serif' }} />
+                                            <div className="flex items-center gap-2 rounded-lg bg-slate-900/70 px-3 py-2.5">
+                                                <Link2 size={14} className="shrink-0 text-teal-400" />
+                                                <input type="text" readOnly value={shareUrl} className="min-w-0 flex-1 border-none bg-transparent text-xs text-slate-100 outline-none" style={{ fontFamily: 'Inter, sans-serif' }} />
                                                 <button onClick={handleCopyUrl} className="shrink-0 rounded-md bg-teal-600 px-3 py-1 text-xs font-semibold text-white hover:bg-teal-700">
                                                     {copied ? '✓' : 'কপি'}
                                                 </button>
@@ -259,8 +264,8 @@ export default function CalculatorPage() {
                                     </div>
                                 </>
                             ) : (
-                                <div className="py-8 text-center text-slate-400">
-                                    <Calculator size={32} strokeWidth={1} className="mx-auto mb-3 opacity-30" />
+                                <div className="py-8 text-center text-slate-500">
+                                    <Calculator size={32} strokeWidth={1} className="mx-auto mb-3 opacity-40" />
                                     <p className="text-sm">PDF অ্যাড করলে এখানে দাম দেখাবে</p>
                                 </div>
                             )}

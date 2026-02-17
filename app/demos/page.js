@@ -20,18 +20,18 @@ const demos = [
 
 export default function DemosPage() {
     return (
-        <div className="min-h-screen bg-slate-50 pt-[72px]">
+        <div className="min-h-screen bg-slate-950 pt-[72px]">
             <div className="mx-auto max-w-[1200px] px-6 py-12">
                 <div className="mb-8">
-                    <h1 className="text-[clamp(1.5rem,4vw,2.4rem)] font-bold text-slate-900">ডেমো গ্যালারি</h1>
-                    <p className="mt-2 text-lg text-slate-500">বিভিন্ন ধরনের প্রিন্ট কেমন দেখায় — নিচের উদাহরণগুলো দেখুন</p>
+                    <h1 className="text-[clamp(1.5rem,4vw,2.4rem)] font-bold text-slate-50">ডেমো গ্যালারি</h1>
+                    <p className="mt-2 text-lg text-slate-400">বিভিন্ন ধরনের প্রিন্ট কেমন দেখায় — নিচের উদাহরণগুলো দেখুন</p>
                 </div>
 
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {demos.map((demo) => (
-                        <div key={demo.id} className="overflow-hidden rounded-xl border border-slate-200 bg-white transition-all hover:-translate-y-1 hover:shadow-xl">
+                        <div key={demo.id} className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900/90 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/60">
                             {/* Preview area */}
-                            <div className={`flex h-[200px] flex-col items-center justify-center gap-2 ${demo.type === 'Color' ? 'bg-gradient-to-br from-teal-50 to-amber-50' : 'bg-gradient-to-br from-slate-100 to-slate-200'}`}>
+                            <div className={`flex h-[200px] flex-col items-center justify-center gap-2 ${demo.type === 'Color' ? 'bg-gradient-to-br from-emerald-900/60 to-amber-900/40' : 'bg-gradient-to-br from-slate-900 to-slate-800'}`}>
                                 <div
                                     className="gap-1"
                                     style={{
@@ -43,21 +43,26 @@ export default function DemosPage() {
                                     }}
                                 >
                                     {Array.from({ length: demo.slides }).map((_, i) => (
-                                        <div key={i} className={`rounded ${demo.type === 'Color' ? 'border border-teal-300 bg-teal-200' : 'border border-slate-400 bg-slate-300'}`} />
+                                        <div
+                                            key={i}
+                                            className={`rounded ${demo.type === 'Color'
+                                                ? 'border border-teal-300 bg-teal-400/70'
+                                                : 'border border-slate-500 bg-slate-400/80'}`}
+                                        />
                                     ))}
                                 </div>
-                                <span className="text-xs text-slate-400">{demo.slides} slide/page • {demo.type}</span>
+                                <span className="text-xs text-slate-300">{demo.slides} slide/page • {demo.type}</span>
                             </div>
 
                             {/* Card info */}
                             <div className="p-5">
-                                <h4 className="mb-1 font-bold text-slate-900">{demo.title}</h4>
-                                <p className="mb-3 text-sm text-slate-500">{demo.description}</p>
+                                <h4 className="mb-1 font-bold text-slate-50">{demo.title}</h4>
+                                <p className="mb-3 text-sm text-slate-400">{demo.description}</p>
                                 <div className="flex gap-2">
-                                    <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${demo.type === 'Color' ? 'bg-blue-50 text-blue-600' : 'bg-green-50 text-green-600'}`}>
+                                    <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${demo.type === 'Color' ? 'bg-blue-950 text-blue-300' : 'bg-emerald-950 text-emerald-300'}`}>
                                         {demo.type}
                                     </span>
-                                    <span className="rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-600">
+                                    <span className="rounded-full bg-amber-900/40 px-2.5 py-0.5 text-xs font-medium text-amber-300">
                                         {demo.slides} slide/page
                                     </span>
                                 </div>

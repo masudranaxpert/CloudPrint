@@ -10,12 +10,12 @@ import {
 import { signOut } from 'next-auth/react';
 
 const NAV_LINKS = [
-    { href: '/admin1', label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/admin1/orders', label: 'Orders', icon: ShoppingCart },
-    { href: '/admin1/calculations', label: 'Calculations', icon: Calculator },
-    { href: '/admin1/pricing', label: 'Pricing', icon: Tags },
-    { href: '/admin1/analytics', label: 'Analytics', icon: BarChart3 },
-    { href: '/admin1/settings', label: 'Settings', icon: Settings },
+    { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+    { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },
+    { href: '/admin/calculations', label: 'Calculations', icon: Calculator },
+    { href: '/admin/pricing', label: 'Pricing', icon: Tags },
+    { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
+    { href: '/admin/settings', label: 'Settings', icon: Settings },
 ];
 
 function AdminSidebar() {
@@ -91,7 +91,7 @@ function AdminSidebar() {
 
                     {/* Sign Out — right after Settings */}
                     <button
-                        onClick={() => signOut({ callbackUrl: '/admin1/login' })}
+                        onClick={() => signOut({ callbackUrl: '/admin/login' })}
                         className="group relative flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-400 transition-all hover:bg-red-500/10 hover:text-red-400"
                     >
                         <LogOut size={18} />
@@ -109,8 +109,8 @@ function AdminGuard({ children }) {
     const pathname = usePathname();
 
     useEffect(() => {
-        if (status === 'unauthenticated' && pathname !== '/admin1/login') {
-            router.push('/admin1/login');
+        if (status === 'unauthenticated' && pathname !== '/admin/login') {
+            router.push('/admin/login');
         }
     }, [status, pathname, router]);
 
@@ -122,7 +122,7 @@ function AdminGuard({ children }) {
         );
     }
 
-    if (pathname === '/admin1/login') {
+    if (pathname === '/admin/login') {
         return <>{children}</>;
     }
 

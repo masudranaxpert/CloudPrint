@@ -24,13 +24,25 @@ export default function AdminOrdersPage() {
     const [notes, setNotes] = useState('');
     const [items, setItems] = useState([{ fileName: '', pageCount: 1, printType: 'bw', slidesPerPage: 1 }]);
     const [creating, setCreating] = useState(false);
+    const [statusFilter, setStatusFilter] = useState('all');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [detailOrder, setDetailOrder] = useState(null);
 
     useEffect(() => {
-        fetch('/api/orders')
-            .then((res) => res.json())
-            .then((data) => { setOrders(data.orders || []); setLoading(false); })
-            .catch(() => setLoading(false));
-    }, []);
+        const fetchOrders = async () => {
+            setLoading(true);
+            try {
+                const qs = statusFilter === 'all' ? '' : `?status=${statusFilter}`;
+                const res = await fetch(`/api/orders${qs}`);
+                const data = await res.json();
+                setOrders(data.orders || []);
+            } catch {
+                setOrders([]);
+            }
+            setLoading(false);
+        };
+        fetchOrders();
+    }, [statusFilter]);
 
     useEffect(() => {
         const match = calcUrl.match(/[?&]id=([a-f0-9]+)/i);
@@ -86,6 +98,13 @@ export default function AdminOrdersPage() {
             setOrders((p) => p.map((o) => (o._id === orderId ? updated : o)));
         } catch {}
     };
+
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+    const filteredOrders = orders.filter((order) => {
+        if (!normalizedSearch) return true;
+        const haystack = `${order.customerName || ''} ${order.customerPhone || ''}`.toLowerCase();
+        return haystack.includes(normalizedSearch);
+    });
 
     return (
         <div className="space-y-6">
@@ -198,12 +217,41 @@ export default function AdminOrdersPage() {
                     <div className="h-10 w-full rounded bg-slate-100" />
                     <div className="h-64 w-full rounded bg-slate-50" />
                 </div>
-            ) : orders.length > 0 ? (
+            ) : (
                 <div className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
-                    <div className="flex items-center gap-3 border-b border-slate-100 bg-slate-50/60 px-6 py-4">
-                        <Filter size={16} className="text-slate-400" />
-                        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">All Orders</span>
-                        <span className="ml-auto rounded-md border border-slate-200 bg-white px-2 py-0.5 font-mono text-xs text-slate-500 shadow-sm">{orders.length}</span>
+                    <div className="flex flex-col gap-3 border-b border-slate-100 bg-slate-50/60 px-6 py-4 md:flex-row md:items-center">
+                        <div className="flex items-center gap-2">
+                            <Filter size={16} className="text-slate-400" />
+                            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Orders</span>
+                            <span className="rounded-md border border-slate-200 bg-white px-2 py-0.5 font-mono text-xs text-slate-500 shadow-sm">
+                                {filteredOrders.length}
+                            </span>
+                        </div>
+                        <div className="mt-2 flex flex-1 flex-col gap-2 md:mt-0 md:flex-row md:items-center md:justify-end md:gap-3">
+                            <div className="relative w-full max-w-xs">
+                                <input
+                                    type="text"
+                                    placeholder="Search by name or phone..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 shadow-sm transition-all focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20"
+                                />
+                            </div>
+                            <div className="relative w-full max-w-[140px]">
+                                <select
+                                    value={statusFilter}
+                                    onChange={(e) => setStatusFilter(e.target.value)}
+                                    className="w-full appearance-none rounded-lg border border-slate-200 bg-white px-3 py-1.5 pr-8 text-xs font-medium text-slate-600 shadow-sm transition-all focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20"
+                                >
+                                    <option value="all">All status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                                <ChevronDown size={12} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                            </div>
+                        </div>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left text-sm">
@@ -219,52 +267,151 @@ export default function AdminOrdersPage() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
-                                {orders.map((order) => {
-                                    const st = STATUS[order.status] || STATUS.pending;
-                                    const StIcon = st.icon;
-                                    return (
-                                        <tr key={order._id} className="transition-colors hover:bg-slate-50/60">
-                                            <td className="px-6 py-4">
-                                                <div className="font-semibold text-slate-900">{order.customerName}</div>
-                                                <div className="mt-0.5 font-mono text-xs text-slate-400">{order.customerPhone}</div>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <span className="inline-flex items-center gap-1.5 text-slate-600"><FileText size={14} className="text-slate-400" /> {order.pdfs?.length || 0} files</span>
-                                            </td>
-                                            <td className="px-6 py-4 font-mono text-slate-600">{order.totalPages}</td>
-                                            <td className="px-6 py-4">
-                                                <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${st.bg} ${st.color} ${st.border}`}>
-                                                    <StIcon size={12} /> {st.label}
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4">
-                                                <span className="rounded bg-slate-100 px-2 py-0.5 text-xs capitalize text-slate-600">{order.orderChannel}</span>
-                                            </td>
-                                            <td className="whitespace-nowrap px-6 py-4 text-xs text-slate-500">{new Date(order.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</td>
-                                            <td className="px-6 py-4">
-                                                <div className="relative">
-                                                    <select className="cursor-pointer appearance-none rounded-lg border border-slate-200 bg-white py-1.5 pl-3 pr-8 text-xs text-slate-700 shadow-sm transition-colors hover:border-slate-300 focus:border-teal-500 focus:outline-none" value={order.status} onChange={(e) => handleStatus(order._id, e.target.value)}>
-                                                        <option value="pending">Pending</option>
-                                                        <option value="processing">Processing</option>
-                                                        <option value="completed">Completed</option>
-                                                        <option value="cancelled">Cancelled</option>
-                                                    </select>
-                                                    <ChevronDown size={12} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
+                                {filteredOrders.length > 0 ? (
+                                    filteredOrders.map((order) => {
+                                        const st = STATUS[order.status] || STATUS.pending;
+                                        const StIcon = st.icon;
+                                        return (
+                                            <tr key={order._id} className="transition-colors hover:bg-slate-50/60">
+                                                <td className="px-6 py-4">
+                                                    <div className="font-semibold text-slate-900">{order.customerName}</div>
+                                                    <div className="mt-0.5 font-mono text-xs text-slate-400">{order.customerPhone}</div>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <span className="inline-flex items-center gap-1.5 text-slate-600"><FileText size={14} className="text-slate-400" /> {order.pdfs?.length || 0} files</span>
+                                                </td>
+                                                <td className="px-6 py-4 font-mono text-slate-600">{order.totalPages}</td>
+                                                <td className="px-6 py-4">
+                                                    <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${st.bg} ${st.color} ${st.border}`}>
+                                                        <StIcon size={12} /> {st.label}
+                                                    </span>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <span className="rounded bg-slate-100 px-2 py-0.5 text-xs capitalize text-slate-600">{order.orderChannel}</span>
+                                                </td>
+                                                <td className="whitespace-nowrap px-6 py-4 text-xs text-slate-500">{new Date(order.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</td>
+                                                <td className="px-6 py-4">
+                                                    <div className="flex items-center gap-2">
+                                                        <button
+                                                            onClick={() => setDetailOrder(order)}
+                                                            className="rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-50"
+                                                        >
+                                                            View
+                                                        </button>
+                                                        <div className="relative">
+                                                            <select
+                                                                className="cursor-pointer appearance-none rounded-lg border border-slate-200 bg-white py-1.5 pl-3 pr-8 text-xs text-slate-700 shadow-sm transition-colors hover:border-slate-300 focus:border-teal-500 focus:outline-none"
+                                                                value={order.status}
+                                                                onChange={(e) => handleStatus(order._id, e.target.value)}
+                                                            >
+                                                                <option value="pending">Pending</option>
+                                                                <option value="processing">Processing</option>
+                                                                <option value="completed">Completed</option>
+                                                                <option value="cancelled">Cancelled</option>
+                                                            </select>
+                                                            <ChevronDown size={12} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                                ) : (
+                                    <tr>
+                                        <td colSpan={7} className="px-6 py-10 text-center text-sm text-slate-500">
+                                            No orders found. Create a new order or change filters.
+                                        </td>
+                                    </tr>
+                                )}
                             </tbody>
                         </table>
                     </div>
                 </div>
-            ) : (
-                <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white p-12 text-center">
-                    <div className="mb-4 rounded-full bg-slate-100 p-4"><ShoppingCart className="h-8 w-8 text-slate-300" /></div>
-                    <h3 className="text-lg font-semibold text-slate-900">No orders yet</h3>
-                    <p className="mx-auto mt-1 max-w-xs text-sm text-slate-500">Orders will appear here once created.</p>
-                    <button onClick={() => setShowCreate(true)} className="mt-6 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-50">Create First Order</button>
+            )}
+            {detailOrder && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
+                    <div className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
+                        <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50 px-6 py-4">
+                            <div>
+                                <h3 className="text-lg font-bold text-slate-900">Order Details</h3>
+                                <p className="mt-0.5 text-xs text-slate-500">
+                                    {detailOrder.customerName} • {detailOrder.customerPhone}
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => setDetailOrder(null)}
+                                className="rounded-full p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+                            >
+                                <X size={20} />
+                            </button>
+                        </div>
+                        <div className="flex-1 space-y-4 overflow-y-auto p-6">
+                            <div className="grid grid-cols-2 gap-4 text-xs text-slate-600">
+                                <div>
+                                    <p className="font-semibold text-slate-500">Status</p>
+                                    <p className="mt-1 capitalize text-slate-800">{(STATUS[detailOrder.status] || STATUS.pending).label}</p>
+                                </div>
+                                <div>
+                                    <p className="font-semibold text-slate-500">Channel</p>
+                                    <p className="mt-1 capitalize text-slate-800">{detailOrder.orderChannel}</p>
+                                </div>
+                                <div>
+                                    <p className="font-semibold text-slate-500">Total Pages</p>
+                                    <p className="mt-1 font-mono text-slate-800">{detailOrder.totalPages}</p>
+                                </div>
+                                <div>
+                                    <p className="font-semibold text-slate-500">Created</p>
+                                    <p className="mt-1 text-slate-800">
+                                        {new Date(detailOrder.createdAt).toLocaleString('en-GB', {
+                                            day: 'numeric',
+                                            month: 'short',
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                        })}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <h4 className="flex items-center gap-2 text-sm font-bold text-slate-900">
+                                    <FileText size={16} className="text-teal-600" /> PDF Items
+                                </h4>
+                                {detailOrder.pdfs && detailOrder.pdfs.length > 0 ? (
+                                    <div className="overflow-hidden rounded-xl border border-slate-100">
+                                        <table className="w-full text-left text-xs">
+                                            <thead className="bg-slate-50 text-slate-500">
+                                                <tr>
+                                                    <th className="px-4 py-2 font-medium">File Name</th>
+                                                    <th className="px-4 py-2 font-medium">Pages</th>
+                                                    <th className="px-4 py-2 font-medium">Print</th>
+                                                    <th className="px-4 py-2 font-medium">Slides/Page</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-slate-100">
+                                                {detailOrder.pdfs.map((p, i) => (
+                                                    <tr key={i} className="bg-white">
+                                                        <td className="max-w-[220px] truncate px-4 py-2 text-slate-800">{p.fileName}</td>
+                                                        <td className="px-4 py-2 font-mono text-slate-600">{p.pageCount}</td>
+                                                        <td className="px-4 py-2 text-slate-600">{p.printType === 'color' ? 'Color' : 'B&W'}</td>
+                                                        <td className="px-4 py-2 text-slate-600">{p.slidesPerPage}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                ) : (
+                                    <p className="text-xs text-slate-500">No PDF items found for this order.</p>
+                                )}
+                            </div>
+                            {detailOrder.notes && (
+                                <div className="space-y-1">
+                                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Notes</p>
+                                    <p className="rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-700 whitespace-pre-line">
+                                        {detailOrder.notes}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

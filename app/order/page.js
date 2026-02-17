@@ -20,32 +20,32 @@ export default function OrderPage() {
     }, []);
 
     return (
-        <div className="min-h-screen bg-slate-50 pt-[72px]">
+        <div className="min-h-screen bg-slate-950 pt-[72px]">
             <div className="mx-auto max-w-[900px] px-6 py-12">
                 <div className="mb-10">
-                    <h1 className="flex items-center gap-3 text-[clamp(1.5rem,4vw,2.4rem)] font-bold text-slate-900">
-                        <ShoppingCart size={32} className="text-teal-600" /> কিভাবে অর্ডার করবেন?
+                    <h1 className="flex items-center gap-3 text-[clamp(1.5rem,4vw,2.4rem)] font-bold text-slate-50">
+                        <ShoppingCart size={32} className="text-teal-400" /> কিভাবে অর্ডার করবেন?
                     </h1>
-                    <p className="mt-2 text-lg text-slate-500">খুব সহজ! নিচের ধাপগুলো অনুসরণ করুন</p>
+                    <p className="mt-2 text-lg text-slate-400">খুব সহজ! নিচের ধাপগুলো অনুসরণ করুন</p>
                 </div>
 
                 <div className="flex flex-col gap-6">
                     {orderSteps.map((s, i) => {
                         const Icon = s.icon;
                         return (
-                            <div key={i} className="flex gap-6 rounded-xl border border-slate-200 bg-white p-6 transition-all hover:border-teal-200 hover:shadow-lg">
-                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-teal-600 to-teal-500 text-lg font-extrabold text-white shadow-lg shadow-teal-600/30" style={{ fontFamily: 'Inter, sans-serif' }}>
+                            <div key={i} className="flex gap-6 rounded-xl border border-slate-800 bg-slate-900/90 p-6 transition-all hover:border-teal-500/70 hover:shadow-lg hover:shadow-slate-900/60">
+                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-teal-600 to-teal-500 text-lg font-extrabold text-white shadow-lg shadow-teal-900/40" style={{ fontFamily: 'Inter, sans-serif' }}>
                                     {s.num}
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                    <h3 className="mb-2 flex items-center gap-2 text-lg font-bold text-slate-900">
-                                        <Icon size={20} className="text-teal-600" /> {s.title}
+                                    <h3 className="mb-2 flex items-center gap-2 text-lg font-bold text-slate-50">
+                                        <Icon size={20} className="text-teal-400" /> {s.title}
                                     </h3>
-                                    {s.desc && <p className="text-sm leading-relaxed text-slate-500">{s.desc}</p>}
+                                    {s.desc && <p className="text-sm leading-relaxed text-slate-400">{s.desc}</p>}
                                     {s.list && (
                                         <>
-                                            <p className="mb-2 text-sm text-slate-500">প্রতিটি PDF-এর জন্য নিচের সেটিংস দিন:</p>
-                                            <ul className="flex flex-col gap-2 pl-5 text-sm text-slate-500">
+                                            <p className="mb-2 text-sm text-slate-400">প্রতিটি PDF-এর জন্য নিচের সেটিংস দিন:</p>
+                                            <ul className="flex flex-col gap-2 pl-5 text-sm text-slate-400">
                                                 {s.list.map((item, j) => <li key={j} className="list-disc">{item}</li>)}
                                             </ul>
                                         </>
@@ -57,9 +57,9 @@ export default function OrderPage() {
                 </div>
 
                 {/* Contact CTA */}
-                <div className="mx-auto mt-12 max-w-[600px] rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-lg">
-                    <h3 className="mb-2 text-xl font-bold text-slate-900">এখনই অর্ডার করুন!</h3>
-                    <p className="mb-6 text-slate-500">কোনো সমস্যা হলে সরাসরি আমাদের সাথে যোগাযোগ করুন</p>
+                <div className="mx-auto mt-12 max-w-[600px] rounded-2xl border border-slate-800 bg-slate-900/90 p-8 text-center shadow-lg shadow-slate-900/60">
+                    <h3 className="mb-2 text-xl font-bold text-slate-50">এখনই অর্ডার করুন!</h3>
+                    <p className="mb-6 text-slate-400">কোনো সমস্যা হলে সরাসরি আমাদের সাথে যোগাযোগ করুন</p>
                     <div className="flex flex-wrap justify-center gap-4">
                         <a href={`https://wa.me/${contacts.whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-green-500 to-green-600 px-6 py-3 font-bold text-white transition-all hover:from-green-600 hover:to-green-700">
                             <MessageCircle size={20} /> WhatsApp
