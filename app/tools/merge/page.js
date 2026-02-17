@@ -12,10 +12,15 @@ export default function MergePage() {
     const [totalPages, setTotalPages] = useState(0);
 
     const handleFileAdd = async (newFiles) => {
+        const MAX_SIZE_BYTES = 70 * 1024 * 1024; // 70MB
         setUploading(true);
         const entries = [];
         for (const file of Array.from(newFiles)) {
             if (file.type !== 'application/pdf') continue;
+            if (file.size > MAX_SIZE_BYTES) {
+                console.warn('PDF skipped due to size limit (70MB):', file.name);
+                continue;
+            }
             try { entries.push({ file, name: file.name, pageCount: await getPdfPageCount(file) }); }
             catch (err) { console.error('Error reading PDF:', file.name, err); }
         }

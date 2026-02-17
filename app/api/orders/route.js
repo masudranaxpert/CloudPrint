@@ -70,3 +70,23 @@ export async function PATCH(request) {
         return NextResponse.json({ error: 'Failed to update order' }, { status: 500 });
     }
 }
+
+// DELETE /api/orders - Delete an order
+export async function DELETE(request) {
+    try {
+        await dbConnect();
+
+        const body = await request.json();
+        const { orderId } = body;
+
+        const deleted = await Order.findByIdAndDelete(orderId);
+
+        if (!deleted) {
+            return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+        }
+
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        return NextResponse.json({ error: 'Failed to delete order' }, { status: 500 });
+    }
+}

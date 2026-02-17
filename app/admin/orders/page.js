@@ -99,6 +99,22 @@ export default function AdminOrdersPage() {
         } catch {}
     };
 
+    const handleDelete = async (orderId) => {
+        const confirmed = window.confirm('Are you sure you want to delete this order?');
+        if (!confirmed) return;
+        try {
+            await fetch('/api/orders', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ orderId }),
+            });
+            setOrders((p) => p.filter((o) => o._id !== orderId));
+            setDetailOrder((current) => (current && current._id === orderId ? null : current));
+        } catch {
+            alert('Failed to delete order.');
+        }
+    };
+
     const normalizedSearch = searchTerm.trim().toLowerCase();
     const filteredOrders = orders.filter((order) => {
         if (!normalizedSearch) return true;
@@ -311,6 +327,12 @@ export default function AdminOrdersPage() {
                                                             </select>
                                                             <ChevronDown size={12} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
                                                         </div>
+                                                        <button
+                                                            onClick={() => handleDelete(order._id)}
+                                                            className="rounded-lg border border-rose-200 bg-white px-2.5 py-1 text-xs font-medium text-rose-600 shadow-sm transition-colors hover:bg-rose-50"
+                                                        >
+                                                            Delete
+                                                        </button>
                                                     </div>
                                                 </td>
                                             </tr>

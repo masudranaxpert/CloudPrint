@@ -2,14 +2,12 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Calculation from '@/lib/models/Calculation';
 
-// POST /api/calculations/cleanup - Delete expired calculations
+// POST /api/calculations/cleanup - Delete all calculations (no time check)
 export async function POST() {
     try {
         await dbConnect();
 
-        const result = await Calculation.deleteMany({
-            expiresAt: { $lt: new Date() },
-        });
+        const result = await Calculation.deleteMany({});
 
         return NextResponse.json({ deleted: result.deletedCount });
     } catch (error) {

@@ -12,11 +12,16 @@ export default function SplitPage() {
     const [result, setResult] = useState(null);
 
     const handleFileAdd = async (newFiles) => {
+        const MAX_SIZE_BYTES = 70 * 1024 * 1024; // 70MB
         setUploading(true);
         setResult(null);
         const entries = [];
         for (const file of Array.from(newFiles)) {
             if (file.type !== 'application/pdf') continue;
+            if (file.size > MAX_SIZE_BYTES) {
+                console.warn('PDF skipped due to size limit (70MB):', file.name);
+                continue;
+            }
             try {
                 const pageCount = await getPdfPageCount(file);
                 entries.push({ id: Date.now() + Math.random(), file, name: file.name, pageCount, splitFrom: 1, splitTo: pageCount });

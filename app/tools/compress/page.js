@@ -11,6 +11,11 @@ export default function CompressPage() {
 
     const handleCompress = async () => {
         if (!file) return;
+        const MAX_SIZE_BYTES = 70 * 1024 * 1024; // 70MB
+        if (file.size > MAX_SIZE_BYTES) {
+            alert('File is larger than 70MB. Please select a smaller PDF.');
+            return;
+        }
         setLoading(true);
         trackToolUsage('compress');
         try { setResult(await compressPdf(file)); }
