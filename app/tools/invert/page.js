@@ -1,0 +1,82 @@
+'use client';
+import { useState } from 'react';
+import { invertPdfBackground, downloadBlob } from '@/lib/pdf-utils';
+import { trackToolUsage } from '@/lib/track';
+import { Upload, SunMoon, Download, RotateCw } from 'lucide-react';
+
+export default function InvertPage() {
+    const [file, setFile] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [done, setDone] = useState(false);
+    const [resultBlob, setResultBlob] = useState(null);
+    const [progress, setProgress] = useState({ current: 0, total: 0 });
+
+    const handleInvert = async () => {
+        if (!file) return;
+        setLoading(true);
+        setProgress({ current: 0, total: 0 });
+        trackToolUsage('invert');
+        try {
+            const blob = await invertPdfBackground(file, (current, total) => setProgress({ current, total }));
+            setResultBlob(blob);
+            setDone(true);
+        } catch (err) { console.error('Invert error:', err); alert('ব্যাকগ্রাউন্ড ইনভার্ট করতে সমস্যা হয়েছে।'); }
+        setLoading(false);
+    };
+
+    const handleReset = () => { setFile(null); setDone(false); setResultBlob(null); setProgress({ current: 0, total: 0 }); };
+    const pct = progress.total > 0 ? Math.round((progress.current / progress.total) * 100) : 0;
+
+    return (
+        <div className="min-h-screen bg-slate-50 pt-[72px]">
+            <div className="mx-auto max-w-[640px] px-6 py-12">
+                <h1 className="mb-2 flex items-center gap-3 text-[clamp(1.5rem,4vw,2rem)] font-bold text-slate-900">
+                    <SunMoon size={28} className="text-teal-600" /> ব্যাকগ্রাউন্ড ইনভার্ট
+                </h1>
+                <p className="mb-8 text-slate-500">কালো/ডার্ক ব্যাকগ্রাউন্ড সাদা করুন — কোচিং স্লাইড প্রিন্ট-ফ্রেন্ডলি বানান</p>
+
+                <div className="flex cursor-pointer flex-col items-center gap-3 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 p-10 text-center transition-all hover:border-teal-500 hover:bg-teal-50/50" onClick={() => document.getElementById('invert-input').click()}>
+                    <Upload size={36} className="text-slate-400" strokeWidth={1.5} />
+                    <p className="font-semibold text-slate-700">{file ? file.name : 'ডার্ক ব্যাকগ্রাউন্ডের PDF সিলেক্ট করুন'}</p>
+                    <p className="text-sm text-slate-400">ক্লিক করুন বা ড্র্যাগ করুন</p>
+                    <input id="invert-input" type="file" accept=".pdf" className="hidden" onChange={(e) => { setFile(e.target.files[0]); setDone(false); setResultBlob(null); }} />
+                </div>
+
+                {file && !done && (
+                    <div className="mt-4">
+                        <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-600 to-teal-500 py-3.5 font-bold text-white shadow-md shadow-teal-600/20 transition-all hover:from-teal-700 hover:to-teal-600 disabled:opacity-60" onClick={handleInvert} disabled={loading}>
+                            {loading ? <><span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" /> ইনভার্ট হচ্ছে...</> : <><SunMoon size={20} /> ব্যাকগ্রাউন্ড ইনভার্ট করুন</>}
+                        </button>
+                        {loading && progress.total > 0 && (
+                            <div className="mt-4">
+                                <div className="mb-2 flex justify-between text-sm text-slate-500">
+                                    <span>পৃষ্ঠা {progress.current}/{progress.total} প্রসেস হচ্ছে...</span>
+                                    <span style={{ fontFamily: 'Inter, sans-serif' }}>{pct}%</span>
+                                </div>
+                                <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200">
+                                    <div className="h-full rounded-full bg-teal-600 transition-all duration-300" style={{ width: `${pct}%` }} />
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {done && resultBlob && (
+                    <div className="mt-6 rounded-xl border border-slate-200 bg-white p-8 text-center shadow-lg">
+                        <div className="mb-4 text-5xl">✅</div>
+                        <h3 className="text-xl font-bold text-slate-900">সফলভাবে ইনভার্ট হয়েছে!</h3>
+                        <p className="mt-2 text-sm text-slate-500">{progress.total} পৃষ্ঠা প্রসেস করা হয়েছে</p>
+                        <div className="mt-4 flex flex-col gap-3">
+                            <button onClick={() => downloadBlob(resultBlob, `inverted_${file.name}`)} className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-600 to-teal-500 py-3.5 font-bold text-white transition-all hover:from-teal-700 hover:to-teal-600">
+                                <Download size={20} /> ডাউনলোড করুন
+                            </button>
+                            <button onClick={handleReset} className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-slate-200 py-3 font-semibold text-slate-600 transition-all hover:bg-slate-50">
+                                <RotateCw size={18} /> আরেকটি ফাইল ইনভার্ট করুন
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
