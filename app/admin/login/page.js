@@ -26,7 +26,7 @@ export default function AdminLoginPage() {
             setError('Invalid email or password');
             setLoading(false);
         } else {
-            router.push('/admin1');
+            router.push('/admin');
         }
     };
 

@@ -15,7 +15,7 @@ export default function Footer() {
             .catch(() => {});
     }, []);
 
-    if (pathname?.startsWith('/admin') || pathname?.startsWith('/admin1')) return null;
+    if (pathname?.startsWith('/admin') || pathname?.startsWith('/admin')) return null;
 
     return (
         <footer className="bg-slate-900 pb-8 pt-16 text-slate-300">
