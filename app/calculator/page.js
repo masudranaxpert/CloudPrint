@@ -20,7 +20,6 @@ export default function CalculatorPage() {
     useEffect(() => {
         fetch('/api/pricing').then(r => r.json()).then(d => { if (d.blackWhitePerPage) setPricing(d); }).catch(() => {});
         fetch('/api/settings').then(r => r.json()).then(d => setContacts(d)).catch(() => {});
-        fetch('/api/calculations/cleanup', { method: 'POST' }).catch(() => {});
     }, []);
 
     const handleFiles = useCallback(async (files) => {
