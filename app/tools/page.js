@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FileArchive, Layers, Scissors, SunMoon } from 'lucide-react';
+import { FileArchive, Layers, Scissors, SunMoon, MoonStar } from 'lucide-react';
 
 export const metadata = {
     title: 'ফ্রি PDF টুলস — CloudPrint',
@@ -10,7 +10,8 @@ const tools = [
     { href: '/tools/compress', title: 'PDF কম্প্রেস', description: 'PDF ফাইলের সাইজ কমান। কোয়ালিটি বজায় রেখে ছোট করুন।', icon: FileArchive, color: 'text-teal-600', bg: 'bg-teal-50' },
     { href: '/tools/merge', title: 'PDF মার্জ', description: 'একাধিক PDF ফাইলকে একটি ফাইলে যুক্ত করুন।', icon: Layers, color: 'text-amber-600', bg: 'bg-amber-50' },
     { href: '/tools/split', title: 'PDF স্প্লিট', description: 'একটি PDF ফাইলকে একাধিক ভাগে ভাগ করুন।', icon: Scissors, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { href: '/tools/invert', title: 'ব্যাকগ্রাউন্ড ইনভার্ট', description: 'কালো ব্যাকগ্রাউন্ড সাদা করুন — ডার্ক স্লাইড লাইট করুন।', icon: SunMoon, color: 'text-slate-700', bg: 'bg-slate-100' },
+    { href: '/tools/invert', title: 'ব্যাকগ্রাউন্ড ইনভার্ট', description: 'সাধারণ ইনভার্ট — পুরো পেজের কালার উল্টে দিন।', icon: SunMoon, color: 'text-slate-700', bg: 'bg-slate-100' },
+    { href: '/tools/smart-invert', title: 'কালো PDF → সাদা PDF (স্পেশাল)', description: 'ডার্ক স্লাইড/কালো চারপাশকে সাদা করুন, ভেতরের সাদা অংশ যতটা সম্ভব আগের মতো রাখুন।', icon: MoonStar, color: 'text-teal-700', bg: 'bg-teal-50' },
 ];
 
 export default function ToolsPage() {
