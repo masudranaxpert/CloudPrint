@@ -14,7 +14,7 @@ export async function GET() {
             pricing = await Pricing.create({
                 blackWhitePerPage: 1.3,
                 colorPerPage: 2.6,
-                slidesPerPageOptions: [1, 2, 4],
+                slidesPerPageOptions: [1, 2, 4, 6],
             });
         }
 
@@ -44,7 +44,7 @@ export async function PUT(request) {
             pricing = await Pricing.create({
                 blackWhitePerPage: blackWhitePerPage ?? 1.3,
                 colorPerPage: colorPerPage ?? 2.6,
-                slidesPerPageOptions: slidesPerPageOptions ?? [1, 2, 4],
+                slidesPerPageOptions: slidesPerPageOptions ?? [1, 2, 4, 6],
             });
         }
 

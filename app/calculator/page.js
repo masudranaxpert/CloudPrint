@@ -18,8 +18,8 @@ export default function CalculatorPage() {
     const [copied, setCopied] = useState(false);
 
     useEffect(() => {
-        fetch('/api/pricing').then(r => r.json()).then(d => { if (d.blackWhitePerPage) setPricing(d); }).catch(() => {});
-        fetch('/api/settings').then(r => r.json()).then(d => setContacts(d)).catch(() => {});
+        fetch('/api/pricing').then(r => r.json()).then(d => { if (d.blackWhitePerPage) setPricing(d); }).catch(() => { });
+        fetch('/api/settings').then(r => r.json()).then(d => setContacts(d)).catch(() => { });
     }, []);
 
     const handleFiles = useCallback(async (files) => {
@@ -86,7 +86,7 @@ export default function CalculatorPage() {
                     setPdfs(data.items.map((item, i) => ({ id: Date.now() + i + Math.random(), file: null, fileName: item.fileName, pageCount: item.pageCount, printType: item.printType, slidesPerPage: item.slidesPerPage, isManual: true })));
                     setShareUrl(`${window.location.origin}/calculator?id=${calcId}`);
                 }
-            }).catch(() => {});
+            }).catch(() => { });
         }
     }, []);
 
@@ -108,7 +108,7 @@ export default function CalculatorPage() {
                         <strong>পৃষ্ঠা ও পাতা বুঝুন:</strong>
                         <ul className="mt-2 list-disc space-y-1 pl-4 leading-relaxed">
                             <li><strong>১ পাতা (Sheet)</strong> = ১ কাগজ = ২ পৃষ্ঠা (Page) — সামনে + পেছনে</li>
-                            <li><strong>Slides/Page</strong> = এক পৃষ্ঠায় কতটি স্লাইড বসবে (1, 2, 4, 8, 16)</li>
+                            <li><strong>Slides/Page</strong> = এক পৃষ্ঠায় কতটি স্লাইড বসবে (1, 2, 4, 6)</li>
                             <li><strong>উদাহরণ:</strong> ১৬ পৃষ্ঠার PDF, 4 slides/page → ৪ পৃষ্ঠা → ২ পাতা</li>
                         </ul>
                     </div>
@@ -182,8 +182,7 @@ export default function CalculatorPage() {
                                                         <option value={1}>১ slide / page</option>
                                                         <option value={2}>২ slides / page</option>
                                                         <option value={4}>৪ slides / page</option>
-                                                        <option value={8}>৮ slides / page</option>
-                                                        <option value={16}>১৬ slides / page</option>
+                                                        <option value={6}>৬ slides / page</option>
                                                     </select>
                                                 </div>
                                             </div>

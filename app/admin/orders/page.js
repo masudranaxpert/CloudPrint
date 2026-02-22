@@ -57,7 +57,7 @@ export default function AdminOrdersPage() {
                         })));
                     }
                 })
-                .catch(() => {});
+                .catch(() => { });
         }
     }, [calcUrl]);
 
@@ -96,7 +96,7 @@ export default function AdminOrdersPage() {
             });
             const updated = await res.json();
             setOrders((p) => p.map((o) => (o._id === orderId ? updated : o)));
-        } catch {}
+        } catch { }
     };
 
     const handleDelete = async (orderId) => {
@@ -207,6 +207,7 @@ export default function AdminOrdersPage() {
                                                 <option value={1}>1</option>
                                                 <option value={2}>2</option>
                                                 <option value={4}>4</option>
+                                                <option value={6}>6</option>
                                             </select>
                                             {items.length > 1 && (
                                                 <button onClick={() => removeItem(idx)} className="rounded-lg p-2 text-rose-400 transition-colors hover:bg-rose-50 hover:text-rose-600"><Trash2 size={16} /></button>
